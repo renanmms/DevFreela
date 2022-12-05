@@ -19,7 +19,7 @@ namespace DevFreela.Infrastructure.Persistence
         public DbSet<User> Users { get; set; }
         public DbSet<ProjectComment> ProjectComments { get; set; }
 
-        protected void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Project>()
                 .HasKey(p => p.Id);
