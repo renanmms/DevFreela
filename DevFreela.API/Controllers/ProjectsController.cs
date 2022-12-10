@@ -1,5 +1,10 @@
 ﻿using DevFreela.API.Models;
+using DevFreela.Application.Commands.CreateComment;
 using DevFreela.Application.Commands.CreateProject;
+using DevFreela.Application.Commands.DeleteProject;
+using DevFreela.Application.Commands.FinishProject;
+using DevFreela.Application.Commands.StartProject;
+using DevFreela.Application.Commands.UpdateProject;
 using DevFreela.Application.InputModels;
 using DevFreela.Application.Services.Interfaces;
 using MediatR;
@@ -59,47 +64,48 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put(int id, [FromBody] UpdateProjectInputModel updateProject)
+        public IActionResult Put(int id, [FromBody] UpdateProjectCommand command)
         {
-            var descriptionLength = updateProject.Description.Length;
+            var descriptionLength = command.Description.Length;
             if(descriptionLength > 50)
             {
                 return BadRequest();
             }
 
-            _projectService.Update(updateProject);
+            _mediator.Send(command);
             
             return NoContent();
         }
 
         // api/projects/3
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete([FromBody] DeleteProjectCommand command)
         {
-            _projectService.Delete(id);
+            await _mediator.Send(command);
             return NoContent();
         }
 
         // api/Projects/2/comments
         [HttpPost("{id}/comments")]
-        public IActionResult PostComment(int id, [FromBody] CreateCommentInputModel createComment)
+        public async Task<IActionResult> PostComment(int id, [FromBody] CreateCommentCommand command)
         {
-            _projectService.CreateComment(createComment);
+            var mediator = await _mediator.Send(command);
+
             return NoContent();
         }
 
         // api/Projects/2/start
         [HttpPut("{id}/start")]
-        public IActionResult Start(int id)
+        public IActionResult Start([FromBody] StartProjectCommand command)
         {
-            _projectService.Start(id);
+            _mediator.Send(command);
             return NoContent();
         }
 
         [HttpPut("{id}/finish")]
-        public  IActionResult Finish(int id)
+        public IActionResult Finish([FromBody] FinishProjectCommand command)
         {
-            _projectService.Finish(id);
+            _mediator.Send(command);
             return NoContent();
         }
 

@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <Folder Include="Queries\GetAllSkills\" />
+    <Folder Include="Queries\GetAllProjects\" />
+    <Folder Include="Queries\GetProject\" />
   </ItemGroup>
 
 </Project>
