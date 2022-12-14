@@ -10,8 +10,10 @@ namespace DevFreela.Application.Queries.GetUser
 {
     public class GetUserQuery : IRequest<UserDetailsViewModel>
     {
+        public GetUserQuery(int id)
+        {
+            Id = id;
+        }
         public int Id { get; private set; }
-        public string FullName { get; set; }
-        public string Email { get; set; }
     }
 }

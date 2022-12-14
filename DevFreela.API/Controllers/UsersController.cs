@@ -23,8 +23,8 @@ namespace DevFreela.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetUserQuery();
-            var user = _mediator.Send(query);
+            var query = new GetUserQuery(id);
+            var user = await _mediator.Send(query);
 
             return Ok(user);
         }

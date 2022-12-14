@@ -22,7 +22,7 @@ namespace DevFreela.Application.Queries.GetUser
         public async Task<UserDetailsViewModel> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
             var user = _dbContext.Users.SingleOrDefault(u => u.Id == request.Id);
-            var userDetails = new UserDetailsViewModel(request.FullName, request.Email);
+            var userDetails = new UserDetailsViewModel(user.FullName, user.Email);
 
             return userDetails;
         }
