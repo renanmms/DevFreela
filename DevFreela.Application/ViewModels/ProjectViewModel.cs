@@ -8,17 +8,23 @@ namespace DevFreela.Application.ViewModels
 {
     public class ProjectViewModel
     {
-        public ProjectViewModel(int id, string title, DateTime? createdAt)
+        public ProjectViewModel(int id, string title, string description, int idClient, int idFreelancer,  decimal totalCost)
         {
             Id = id;
             Title = title;
-            CreatedAt = createdAt;
+            Description = description;
+            CreatedAt = DateTime.Now;
+            IdClient = idClient;
+            IdFreelancer = idFreelancer;
+            TotalCost = totalCost;
         }
-        public int Id { get; private set; }
 
-        public string Title { get; private set; }
-        public DateTime? CreatedAt { get; private set; }
-
-
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public int IdClient { get; set; }
+        public int IdFreelancer { get; set; }
+        public decimal TotalCost { get; set; }
     }
 }

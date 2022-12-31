@@ -1,12 +1,7 @@
-﻿using DevFreela.Application.InputModels;
+﻿using DevFreela.Application.ViewModels;
 using DevFreela.Core.Entities;
 using DevFreela.Infrastructure.Persistence;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DevFreela.Application.Commands.CreateProject
 {
@@ -19,7 +14,16 @@ namespace DevFreela.Application.Commands.CreateProject
         }
         public async Task<int> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
         {
-            var project = new Project(request.Title, request.Description, request.IdClient, request.IdFreelancer, request.TotalCost);
+            var projectModel = new ProjectViewModel(
+                request.Id,
+                request.Title,
+                request.Description,
+                request.IdClient,
+                request.IdFreelancer,
+                request.TotalCost
+            );
+
+            var project = new Project(projectModel.Title, projectModel.Description, projectModel.CreatedAt, projectModel.IdClient, projectModel.IdFreelancer, projectModel.TotalCost);
 
             await _dbContext.Projects.AddAsync(project);
             await _dbContext.SaveChangesAsync();
