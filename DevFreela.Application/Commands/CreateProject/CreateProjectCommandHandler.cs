@@ -23,7 +23,7 @@ namespace DevFreela.Application.Commands.CreateProject
                 request.TotalCost
             );
 
-            var project = new Project(projectModel.Title, projectModel.Description, projectModel.CreatedAt, projectModel.IdClient, projectModel.IdFreelancer, projectModel.TotalCost);
+            var project = new Project(projectModel.Id, projectModel.Title, projectModel.Description, projectModel.CreatedAt, projectModel.IdClient, projectModel.IdFreelancer, projectModel.TotalCost);
 
             await _dbContext.Projects.AddAsync(project);
             await _dbContext.SaveChangesAsync();
