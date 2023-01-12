@@ -2,6 +2,9 @@ using DevFreela.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 using DevFreela.Application.Commands.CreateProject;
+using DevFreela.Application.Queries.GetAllSkills;
+using DevFreela.Core.Repositories;
+using DevFreela.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(typeof(CreateProjectCommand));
+builder.Services.AddMediatR(typeof(GetAllSkillsQuery));
+
+// Configure repositories
+builder.Services.AddScoped<ISkillRepository, SkillRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
 var app = builder.Build();
 
