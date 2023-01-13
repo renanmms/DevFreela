@@ -1,4 +1,5 @@
-﻿using DevFreela.Core.Entities;
+﻿using DevFreela.Core.DTOs;
+using DevFreela.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace DevFreela.Core.Repositories
     public interface IProjectRepository
     {
         Task<List<Project>> GetAll();
+        Task<ProjectDTO> GetById(int id);
     }
 }

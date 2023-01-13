@@ -36,7 +36,7 @@ namespace DevFreela.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var query = new GetProjectQuery();
+            var query = new GetProjectQuery(id);
             var project = await _mediator.Send(query);
 
             if(project == null)

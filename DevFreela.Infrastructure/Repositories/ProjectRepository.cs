@@ -1,4 +1,5 @@
-﻿using DevFreela.Core.Entities;
+﻿using DevFreela.Core.DTOs;
+using DevFreela.Core.Entities;
 using DevFreela.Core.Repositories;
 using DevFreela.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,20 @@ namespace DevFreela.Infrastructure.Repositories
         public async Task<List<Project>> GetAll()
         {
             return await _dbContext.Projects.ToListAsync();
+        }
+
+        public async Task<ProjectDTO> GetById(int id)
+        {
+            var project = _dbContext.Projects
+               .Include(p => p.Client)
+               .Include(p => p.Freelancer)
+               .SingleOrDefault(p => p.Id == id);
+
+            if (project == null) return null;
+
+            var projectDTO = new ProjectDTO(project.Id, project.Title, project.Description);
+
+            return projectDTO;
         }
     }
 }

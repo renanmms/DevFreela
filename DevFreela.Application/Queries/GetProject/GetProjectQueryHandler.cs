@@ -1,4 +1,7 @@
 ﻿using DevFreela.Application.ViewModels;
+using DevFreela.Core.DTOs;
+using DevFreela.Core.Entities;
+using DevFreela.Core.Repositories;
 using DevFreela.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,35 +13,20 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Queries.GetProject
 {
-    public class GetProjectQueryHandler : IRequestHandler<GetProjectQuery, ProjectDetailsViewModel>
+    public class GetProjectQueryHandler : IRequestHandler<GetProjectQuery, ProjectDTO>
     {
         private readonly DevFreelaDbContext _dbContext;
+        private readonly IProjectRepository _projectRepository;
 
-        public GetProjectQueryHandler(DevFreelaDbContext dbContext)
+        public GetProjectQueryHandler(IProjectRepository projectRepository)
         {
-            _dbContext = dbContext;
+            _projectRepository = projectRepository;
         }
 
-        public async Task<ProjectDetailsViewModel> Handle(GetProjectQuery request, CancellationToken cancellationToken)
+        public async Task<ProjectDTO> Handle(GetProjectQuery request, CancellationToken cancellationToken)
         {
-            var project = _dbContext.Projects
-               .Include(p => p.Client)
-               .Include(p => p.Freelancer)
-               .SingleOrDefault(p => p.Id == request.Id);
-
-            if (project == null) return null;
-
-            var projectDetailsViewModel = new ProjectDetailsViewModel(
-                project.Id,
-                project.Title,
-                project.Description,
-                project.StartedAt,
-                project.FinishedAt,
-                project.TotalCost,
-                project.Client.FullName,
-                project.Freelancer.FullName);
-
-            return projectDetailsViewModel;
+            var project = await _projectRepository.GetById(request.Id);
+            return project;
         }
     }
 }
