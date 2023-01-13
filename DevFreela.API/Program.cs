@@ -23,6 +23,7 @@ builder.Services.AddMediatR(typeof(GetAllSkillsQuery));
 // Configure repositories
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 

@@ -1,4 +1,5 @@
 ﻿using DevFreela.Application.ViewModels;
+using DevFreela.Core.DTOs;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Queries.GetUser
 {
-    public class GetUserQuery : IRequest<UserDetailsViewModel>
+    public class GetUserQuery : IRequest<UserDTO>
     {
         public GetUserQuery(int id)
         {
