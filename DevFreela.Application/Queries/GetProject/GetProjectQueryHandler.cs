@@ -15,7 +15,6 @@ namespace DevFreela.Application.Queries.GetProject
 {
     public class GetProjectQueryHandler : IRequestHandler<GetProjectQuery, ProjectDTO>
     {
-        private readonly DevFreelaDbContext _dbContext;
         private readonly IProjectRepository _projectRepository;
 
         public GetProjectQueryHandler(IProjectRepository projectRepository)
