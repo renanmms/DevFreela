@@ -18,7 +18,7 @@ namespace DevFreela.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<ProjectDTO>> GetAll()
+        public async Task<List<ProjectDTO>> GetAllAsync()
         {
             var projects = await _dbContext.Projects.ToListAsync();
 
@@ -33,7 +33,7 @@ namespace DevFreela.Infrastructure.Repositories
             return projectsDTO;
         }
 
-        public async Task<ProjectDTO> GetById(int id)
+        public async Task<ProjectDTO> GetByIdAsync(int id)
         {
             var project = _dbContext.Projects
                .Include(p => p.Client)

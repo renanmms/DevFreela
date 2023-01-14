@@ -4,6 +4,6 @@ namespace DevFreela.Core.Repositories
 {
     public interface IUserRepository
     {
-        Task<UserDTO> GetById(int id);
+        Task<UserDTO> GetByIdAsync(int id);
     }
 }

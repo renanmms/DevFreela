@@ -18,7 +18,7 @@ namespace DevFreela.Application.Queries.GetAllProjects
 
         public async Task<List<ProjectDTO>> Handle(GetAllProjectsQuery request, CancellationToken cancellationToken)
         {
-            var projects = await _projectRepository.GetAll();
+            var projects = await _projectRepository.GetAllAsync();
             return projects;
         }
     }

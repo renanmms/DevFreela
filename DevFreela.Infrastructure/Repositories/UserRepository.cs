@@ -19,7 +19,7 @@ namespace DevFreela.Infrastructure.Repositories
             _dbContext = dbContext;
         }
         
-        public async Task<UserDTO> GetById(int id)
+        public async Task<UserDTO> GetByIdAsync(int id)
         {
             var user = _dbContext.Users.SingleOrDefault(u => u.Id == id);
             var userDetails = new UserDTO(user.FullName, user.Email);
