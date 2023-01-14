@@ -18,9 +18,19 @@ namespace DevFreela.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<Project>> GetAll()
+        public async Task<List<ProjectDTO>> GetAll()
         {
-            return await _dbContext.Projects.ToListAsync();
+            var projects = await _dbContext.Projects.ToListAsync();
+
+            var projectsDTO = new List<ProjectDTO>();
+
+            foreach(var project in projects)
+            {
+                var projectDTO = new ProjectDTO(project.Id, project.Title, project.Description);
+                projectsDTO.Add(projectDTO);
+            }
+
+            return projectsDTO;
         }
 
         public async Task<ProjectDTO> GetById(int id)

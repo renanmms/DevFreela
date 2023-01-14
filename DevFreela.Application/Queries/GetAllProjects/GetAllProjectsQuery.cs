@@ -1,4 +1,5 @@
 ﻿using DevFreela.Application.ViewModels;
+using DevFreela.Core.DTOs;
 using DevFreela.Core.Entities;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Queries.GetAllProjects
 {
-    public class GetAllProjectsQuery : IRequest<List<Project>>
+    public class GetAllProjectsQuery : IRequest<List<ProjectDTO>>
     {
         public GetAllProjectsQuery(string query)
         {
