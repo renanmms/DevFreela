@@ -12,5 +12,6 @@ namespace DevFreela.Core.Repositories
     {
         Task<List<ProjectDTO>> GetAllAsync();
         Task<ProjectDTO> GetByIdAsync(int id);
+        Task<int> CreateProjectAsync(Project project);
     }
 }

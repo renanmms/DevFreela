@@ -18,6 +18,13 @@ namespace DevFreela.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<int> CreateProjectAsync(Project project)
+        {
+            _dbContext.Projects.Add(project);
+            var numberOfEntries = await _dbContext.SaveChangesAsync();
+            return project.Id;
+        }
+
         public async Task<List<ProjectDTO>> GetAllAsync()
         {
             var projects = await _dbContext.Projects.ToListAsync();
@@ -46,5 +53,7 @@ namespace DevFreela.Infrastructure.Repositories
 
             return projectDTO;
         }
+
+
     }
 }
