@@ -29,7 +29,7 @@ namespace DevFreela.API.Controllers
         public async Task<IActionResult> Post([FromBody] CreateUserCommand command)
         {
             await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetById), new {id = 1}, command);
+            return CreatedAtAction(nameof(GetById), command);
         }
 
 
