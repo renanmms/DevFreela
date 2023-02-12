@@ -81,5 +81,14 @@ namespace DevFreela.Infrastructure.Repositories
 
             return project.Status;
         }
+
+        public async Task<int> UpdateProjectAsync(UpdateProjectDTO model)
+        {
+            var project = _dbContext.Projects.SingleOrDefault(p => p.Id == model.Id);
+            project.Update(model.Title, model.Description, model.TotalCost);
+            await _dbContext.SaveChangesAsync();
+
+            return project.Id;
+        }
     }
 }

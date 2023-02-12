@@ -17,5 +17,6 @@ namespace DevFreela.Core.Repositories
         Task<ProjectStatusEnum> DeleteProjectAsync(int id);
         Task<ProjectStatusEnum> FinishProjectAsync(int id);
         Task<ProjectStatusEnum> StartProjectAsync(int id);
+        Task<int> UpdateProjectAsync(UpdateProjectDTO model);
     }
 }
