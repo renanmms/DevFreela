@@ -52,7 +52,7 @@ namespace DevFreela.Infrastructure.Repositories
 
             foreach(var project in projects)
             {
-                var projectDTO = new ProjectDTO(project.Id, project.Title, project.Description, project.Status);
+                var projectDTO = new ProjectDTO(project.Id, project.Title, project.Description, project.Status.ToString());
                 projectsDTO.Add(projectDTO);
             }
 
@@ -68,11 +68,18 @@ namespace DevFreela.Infrastructure.Repositories
 
             if (project == null) return null;
 
-            var projectDTO = new ProjectDTO(project.Id, project.Title, project.Description, project.Status);
+            var projectDTO = new ProjectDTO(project.Id, project.Title, project.Description, project.Status.ToString());
 
             return projectDTO;
         }
 
+        public async Task<ProjectStatusEnum> StartProjectAsync(int id)
+        {
+            var project = await _dbContext.Projects.SingleOrDefaultAsync(p => p.Id == id);
+            project.Start();
+            await _dbContext.SaveChangesAsync();
 
+            return project.Status;
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace DevFreela.Core.DTOs
 {
     public class ProjectDTO
     {
-        public ProjectDTO(int id, string title, string description, ProjectStatusEnum status)
+        public ProjectDTO(int id, string title, string description, string status)
         {
             Id = id;
             Title = title;
@@ -20,6 +20,6 @@ namespace DevFreela.Core.DTOs
         public int Id { get; private set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
-        public ProjectStatusEnum Status { get; private set; }
+        public string Status { get; private set; }
     }
 }
