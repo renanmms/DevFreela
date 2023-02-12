@@ -1,5 +1,6 @@
 ﻿using DevFreela.Core.DTOs;
 using DevFreela.Core.Entities;
+using DevFreela.Core.Enums;
 using DevFreela.Core.Repositories;
 using DevFreela.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,15 @@ namespace DevFreela.Infrastructure.Repositories
             return project.Id;
         }
 
+        public async Task<ProjectStatusEnum> DeleteProjectAsync(int id)
+        {
+            var project = _dbContext.Projects.SingleOrDefault(p => p.Id == id);
+            project.Cancel();
+            await _dbContext.SaveChangesAsync();
+
+            return project.Status;
+        }
+
         public async Task<List<ProjectDTO>> GetAllAsync()
         {
             var projects = await _dbContext.Projects.ToListAsync();
@@ -33,7 +43,7 @@ namespace DevFreela.Infrastructure.Repositories
 
             foreach(var project in projects)
             {
-                var projectDTO = new ProjectDTO(project.Id, project.Title, project.Description);
+                var projectDTO = new ProjectDTO(project.Id, project.Title, project.Description, project.Status);
                 projectsDTO.Add(projectDTO);
             }
 
@@ -49,7 +59,7 @@ namespace DevFreela.Infrastructure.Repositories
 
             if (project == null) return null;
 
-            var projectDTO = new ProjectDTO(project.Id, project.Title, project.Description);
+            var projectDTO = new ProjectDTO(project.Id, project.Title, project.Description, project.Status);
 
             return projectDTO;
         }
