@@ -1,4 +1,5 @@
 ﻿using DevFreela.Core.Enums;
+using DevFreela.Core.Repositories;
 using DevFreela.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,20 +13,17 @@ namespace DevFreela.Application.Commands.FinishProject
 {
     public class FinishProjectCommandHandler : IRequestHandler<FinishProjectCommand, ProjectStatusEnum>
     {
-        private readonly DevFreelaDbContext _dbContext;
+        private readonly IProjectRepository _projectRepository;
 
-        public FinishProjectCommandHandler(DevFreelaDbContext dbContext)
+        public FinishProjectCommandHandler(IProjectRepository projectRepository)
         {
-            _dbContext = dbContext;
+            _projectRepository = projectRepository;
         }
 
         public async Task<ProjectStatusEnum> Handle(FinishProjectCommand request, CancellationToken cancellationToken)
         {
-            var project = _dbContext.Projects.SingleOrDefault(p => p.Id == request.Id);
-            project.Finish();
-            await _dbContext.SaveChangesAsync();
-
-            return project.Status;
+            var status = await _projectRepository.FinishProjectAsync(request.Id);
+            return status;
         }
     }
 }
