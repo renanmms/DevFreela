@@ -10,6 +10,6 @@ namespace DevFreela.Application.Commands.StartProject
 {
     public class StartProjectCommand : IRequest<ProjectStatusEnum>
     {
-        public int Id;
+        public int Id { get; set; }
     }
 }
