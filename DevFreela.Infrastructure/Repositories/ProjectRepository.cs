@@ -19,6 +19,14 @@ namespace DevFreela.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<int> CreateCommentAsync(ProjectComment comment)
+        {
+            await _dbContext.ProjectComments.AddAsync(comment);
+            await _dbContext.SaveChangesAsync();
+
+            return comment.Id;
+        }
+
         public async Task<int> CreateProjectAsync(Project project)
         {
             _dbContext.Projects.Add(project);
