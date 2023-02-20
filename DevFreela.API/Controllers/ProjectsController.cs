@@ -48,9 +48,14 @@ namespace DevFreela.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateProjectCommand command)
         {
-            var titleLength = command.Title.Length;
-            if(titleLength > 50)
-                return BadRequest();
+            if(!ModelState.IsValid){
+                var messages = ModelState
+                    .SelectMany(ms => ms.Value.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+                    
+                return BadRequest(messages);
+            }            
 
             var id = await _mediator.Send(command);
 
