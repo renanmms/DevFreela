@@ -15,7 +15,7 @@ namespace DevFreela.Application.Validators
 
             RuleFor(u => u.Password)
                 .Must(ValidPassword)
-                .WithMessage("Senha não é válida! Deve conter pelo menos um caractere especial, um número, letra maiscula e minuscula");
+                .WithMessage("Senha não é válida! Deve conter pelo menos um caractere especial, um número, letra maiuscula e minuscula");
             
             RuleFor(u => u.FullName)
                 .NotEmpty()
