@@ -7,6 +7,7 @@ using DevFreela.Core.Repositories;
 using DevFreela.Infrastructure.Repositories;
 using FluentValidation.AspNetCore;
 using DevFreela.Application.Validators;
+using DevFreela.API.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DevFreelaCs");
 builder.Services.AddDbContext<DevFreelaDbContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(options => options.Filters.Add(typeof(ValidationFilter)))
     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
