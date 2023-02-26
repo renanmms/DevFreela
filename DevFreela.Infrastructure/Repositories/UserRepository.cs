@@ -22,7 +22,7 @@ namespace DevFreela.Infrastructure.Repositories
 
         public async Task<int> CreateUserAsync(UserDTO userDTO)
         {
-            var user = new User(userDTO.FullName, userDTO.Email, userDTO.BirthDate);
+            var user = new User(userDTO.FullName, userDTO.Email, userDTO.Password, userDTO.Role, userDTO.BirthDate);
             _dbContext.Users.Add(user);
             var numberOfEntries = await _dbContext.SaveChangesAsync();
 
@@ -32,7 +32,7 @@ namespace DevFreela.Infrastructure.Repositories
         public async Task<UserDTO> GetByIdAsync(int id)
         {
             var user = _dbContext.Users.SingleOrDefault(u => u.Id == id);
-            var userDetails = new UserDTO(user.FullName, user.Email);
+            var userDetails = new UserDTO(user.FullName, user.Email, user.Password, user.BirthDate, user.Role);
 
             return userDetails;
         }
