@@ -8,6 +8,8 @@ using DevFreela.Infrastructure.Repositories;
 using FluentValidation.AspNetCore;
 using DevFreela.Application.Validators;
 using DevFreela.API.Filters;
+using DevFreela.Core.Services;
+using DevFreela.Infrastructure.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,8 @@ builder.Services.AddMediatR(typeof(GetAllSkillsQuery));
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
