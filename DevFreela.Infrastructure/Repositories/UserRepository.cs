@@ -36,5 +36,11 @@ namespace DevFreela.Infrastructure.Repositories
 
             return userDetails;
         }
+
+        public async Task<User> GetUserByEmailAndPasswordAsync(string email, string passwordHash)
+        {
+            var user = _dbContext.Users.SingleOrDefault(u => u.Email == email && u.Password == passwordHash);
+            return user;
+        }
     }
 }
