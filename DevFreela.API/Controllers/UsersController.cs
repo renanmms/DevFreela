@@ -3,10 +3,12 @@ using DevFreela.Application.Commands.CreateUser;
 using DevFreela.Application.Commands.LoginUser;
 using DevFreela.Application.Queries.GetUser;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevFreela.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
@@ -27,6 +29,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] CreateUserCommand command)
         {
             if(!ModelState.IsValid){
@@ -51,7 +54,7 @@ namespace DevFreela.API.Controllers
             if(login == null)
                 return BadRequest();
 
-            return NoContent();
+            return Ok(login);
         }
 
     }
