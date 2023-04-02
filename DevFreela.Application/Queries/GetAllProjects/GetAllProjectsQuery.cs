@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Queries.GetAllProjects
 {
-    public class GetAllProjectsQuery : IRequest<List<ProjectDTO>>
+    public class GetAllProjectsQuery : IRequest<List<Project>>
     {
         public GetAllProjectsQuery(string query)
         {

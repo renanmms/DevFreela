@@ -7,16 +7,16 @@ using Microsoft.Extensions.Configuration;
 
 namespace DevFreela.Application.Queries.GetAllProjects
 {
-    public class GetAllProjectsQueryHandler : IRequestHandler<GetAllProjectsQuery, List<ProjectDTO>>
+    public class GetAllProjectsQueryHandler : IRequestHandler<GetAllProjectsQuery, List<Project>>
     {
         private readonly IProjectRepository _projectRepository;
 
-        public GetAllProjectsQueryHandler(IProjectRepository projectRepository, IConfiguration configuration)
+        public GetAllProjectsQueryHandler(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;
         }
 
-        public async Task<List<ProjectDTO>> Handle(GetAllProjectsQuery request, CancellationToken cancellationToken)
+        public async Task<List<Project>> Handle(GetAllProjectsQuery request, CancellationToken cancellationToken)
         {
             var projects = await _projectRepository.GetAllAsync();
             return projects;
