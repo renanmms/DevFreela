@@ -47,9 +47,9 @@ namespace DevFreela.API.Controllers
 
 
         [HttpPut("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
         {
-
             var login = await _mediator.Send(command);
             if(login == null)
                 return BadRequest();
