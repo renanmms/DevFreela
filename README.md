@@ -4,8 +4,10 @@ Projeto Web API com ASP.NET Core com o padrão REST, consiste em uma plataforma 
 
 ## Tecnologias utilizadas
 
+- C#
 - .NET 6
 - Entity Framework Core
+- SQL Server
 
 ## Padrões utilizados
 
