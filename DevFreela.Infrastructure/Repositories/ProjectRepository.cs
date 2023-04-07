@@ -59,7 +59,7 @@ namespace DevFreela.Infrastructure.Repositories
             return projects;
         }
 
-        public async Task<ProjectDTO> GetByIdAsync(int id)
+        public async Task<Project> GetByIdAsync(int id)
         {
             var project = _dbContext.Projects
                .Include(p => p.Client)
@@ -68,9 +68,7 @@ namespace DevFreela.Infrastructure.Repositories
 
             if (project == null) return null;
 
-            var projectDTO = new ProjectDTO(project.Id, project.Title, project.Description, project.Status.ToString());
-
-            return projectDTO;
+            return project;
         }
 
         public async Task<ProjectStatusEnum> StartProjectAsync(int id)
