@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DevFreela.Application.Commands.FinishProject
 {
-    public class FinishProjectCommand : IRequest<ProjectStatusEnum>
+    public class FinishProjectCommand : IRequest<bool>
     {
         public int Id { get; set; }
         public string CreditCardNumber { get; set; }
