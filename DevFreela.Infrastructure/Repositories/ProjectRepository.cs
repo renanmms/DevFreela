@@ -71,6 +71,11 @@ namespace DevFreela.Infrastructure.Repositories
             return project;
         }
 
+        public async Task SaveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<ProjectStatusEnum> StartProjectAsync(int id)
         {
             var project = await _dbContext.Projects.SingleOrDefaultAsync(p => p.Id == id);
