@@ -84,6 +84,8 @@ builder.Services
         (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
+    
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
