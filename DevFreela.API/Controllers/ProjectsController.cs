@@ -99,8 +99,12 @@ namespace DevFreela.API.Controllers
         [Authorize(Roles = "freelancer")]
         public async Task<IActionResult> Finish([FromBody] FinishProjectCommand command)
         {
-            await _mediator.Send(command);
-            return NoContent();
+            var result = await _mediator.Send(command);
+
+            if(!result)
+                return BadRequest("O pagamento não pôde ser processado.");
+                
+            return Accepted();
         }
 
     }
