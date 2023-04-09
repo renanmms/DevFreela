@@ -28,7 +28,7 @@ namespace DevFreela.UnitTests.Application.Commands
             var id = await createUserCommandHandler.Handle(command, new CancellationToken());
 
             // Assert
-            Assert.NotNull(id);
+            Assert.True(id > 0);
         }
     }
 }
