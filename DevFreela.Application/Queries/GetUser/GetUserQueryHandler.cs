@@ -16,7 +16,8 @@ namespace DevFreela.Application.Queries.GetUser
         public async Task<UserDTO> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByIdAsync(request.Id);
-            return user;
+            var userDTO = UserDTO.FromEntity(user);
+            return userDTO;
         }
     }
 }

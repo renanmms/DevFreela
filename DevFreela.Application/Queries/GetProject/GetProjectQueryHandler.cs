@@ -26,7 +26,7 @@ namespace DevFreela.Application.Queries.GetProject
         {
             var project = await _projectRepository.GetByIdAsync(request.Id);
 
-            var projectDTO = new ProjectDTO(project.Id, project.Title, project.Description, project.Status.ToString());
+            var projectDTO = ProjectDTO.FromEntity(project);
 
             return projectDTO;
         }
