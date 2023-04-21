@@ -29,12 +29,10 @@ namespace DevFreela.Infrastructure.Repositories
             return user.Id;
         }
 
-        public async Task<UserDTO> GetByIdAsync(int id)
+        public async Task<User> GetByIdAsync(int id)
         {
             var user = _dbContext.Users.SingleOrDefault(u => u.Id == id);
-            var userDetails = new UserDTO(user.FullName, user.Email, user.Password, user.BirthDate, user.Role);
-
-            return userDetails;
+            return user;
         }
 
         public async Task<User> GetUserByEmailAndPasswordAsync(string email, string passwordHash)
