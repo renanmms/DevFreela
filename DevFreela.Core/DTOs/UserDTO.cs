@@ -1,4 +1,6 @@
-﻿namespace DevFreela.Core.DTOs
+﻿using DevFreela.Core.Entities;
+
+namespace DevFreela.Core.DTOs
 {
     public class UserDTO
     {
@@ -16,5 +18,9 @@
         public DateTime BirthDate { get; private set; }
         public string Role { get; private set; }
         public string Password { get; private set; }
+
+        public static UserDTO FromEntity(User user){
+            return new UserDTO(user.FullName, user.Email, user.Password, user.BirthDate, user.Role);
+        }
     }
 }

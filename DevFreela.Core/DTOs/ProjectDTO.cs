@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DevFreela.Core.Entities;
 using DevFreela.Core.Enums;
 
 namespace DevFreela.Core.DTOs
@@ -21,5 +22,10 @@ namespace DevFreela.Core.DTOs
         public string Title { get; private set; }
         public string Description { get; private set; }
         public string Status { get; private set; }
+
+        public static ProjectDTO FromEntity(Project project)
+        {
+            return new ProjectDTO(project.Id, project.Title, project.Description, project.Status.ToString());
+        }
     }
 }
