@@ -19,7 +19,7 @@ namespace DevFreela.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var query = new GetAllSkillsQuery();
-            var skills = _mediator.Send(query);
+            var skills = await _mediator.Send(query);
 
             return Ok(skills);
         }
