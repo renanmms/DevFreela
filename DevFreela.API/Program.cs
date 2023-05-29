@@ -1,23 +1,9 @@
-using DevFreela.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using MediatR;
-using DevFreela.Application.Commands.CreateProject;
-using DevFreela.Application.Queries.GetAllSkills;
-using DevFreela.Core.Repositories;
-using DevFreela.Infrastructure.Repositories;
 using FluentValidation.AspNetCore;
-using DevFreela.Application.Validators;
+using Microsoft.EntityFrameworkCore;
 using DevFreela.API.Filters;
-using DevFreela.Core.Services;
-using DevFreela.Infrastructure.Auth;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using DevFreela.Infrastructure.MessageBus;
-using DevFreela.Infrastructure.Payments;
-using DevFreela.Application.Consumers;
 using DevFreela.API.Extensions;
+using DevFreela.Application.Validators;
+using DevFreela.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
