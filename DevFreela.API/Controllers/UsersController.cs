@@ -1,5 +1,4 @@
-﻿using DevFreela.API.Models;
-using DevFreela.Application.Commands.CreateUser;
+﻿using DevFreela.Application.Commands.CreateUser;
 using DevFreela.Application.Commands.LoginUser;
 using DevFreela.Application.Queries.GetUser;
 using MediatR;
@@ -34,7 +33,7 @@ namespace DevFreela.API.Controllers
         {
             if(!ModelState.IsValid){
                 var messages = ModelState
-                    .SelectMany(ms => ms.Value.Errors)
+                    .SelectMany(ms => ms.Value?.Errors!)
                     .Select(e => e.ErrorMessage)
                     .ToList();
                 
