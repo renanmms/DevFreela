@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DevFreela.API.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DevFreela.API.Controllers
 {
@@ -6,10 +7,17 @@ namespace DevFreela.API.Controllers
     [Route("api/[controller]")]
     public class SkillsController : ControllerBase
     {
+        private readonly IConfigService _configService;
+        public SkillsController(IConfigService configService)
+        {
+            _configService = configService;
+        }
+
+
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok();
+            return Ok(_configService.GetValue());
         }
 
         [HttpPost]
