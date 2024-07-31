@@ -1,4 +1,5 @@
 using DevFreela.API.Models;
+using DevFreela.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<FreelanceTotalCostConfig>(builder.Configuration.GetSection(nameof(FreelanceTotalCostConfig)));
+builder.Services.AddTransient<IConfigService, ConfigService>();
 
 var app = builder.Build();
 
