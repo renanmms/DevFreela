@@ -1,4 +1,5 @@
-﻿using DevFreela.API.Services;
+﻿using DevFreela.API.Models;
+using DevFreela.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevFreela.API.Controllers
@@ -21,7 +22,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post()
+        public IActionResult Post(CreateSkillInputModel model)
         {
             return NoContent();
         }   
