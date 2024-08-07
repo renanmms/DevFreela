@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevFreela.API.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly DevFreelaDbContext _context;
@@ -40,7 +42,7 @@ namespace DevFreela.API.Controllers
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpPost("{id}/skills")]
