@@ -20,7 +20,7 @@ namespace DevFreela.API.Controllers
 
         // GET api/projects?search=crm
         [HttpGet]
-        public IActionResult Get(string searchs = "")
+        public IActionResult Get(string searchs = "", int page = 0, int size = 3)
         {
             var projects = _context.Projects
                 .Include(p => p.Client)
@@ -29,7 +29,10 @@ namespace DevFreela.API.Controllers
                 .Where(p => !p.IsDeleted &&
                     searchs == "" || 
                     p.Title.Contains(searchs) ||
-                    p.Description.Contains(searchs));
+                    p.Description.Contains(searchs))
+                .Skip(page * size)
+                .Take(size)
+                .ToList();
 
             var model = projects.Select(ProjectItemViewModel.FromEntity);
 
