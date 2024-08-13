@@ -58,6 +58,9 @@ namespace DevFreela.API.Persistence
                 .Entity<Project>(e => {
                     e.HasKey(p => p.Id);
 
+                    e.Property(p => p.TotalCost)
+                        .HasColumnType("decimal(12, 4)");
+                    
                     e.HasOne(p => p.Freelancer)
                     .WithMany(f => f.FreelanceProjects)
                     .HasForeignKey(p => p.IdFreelancer)
