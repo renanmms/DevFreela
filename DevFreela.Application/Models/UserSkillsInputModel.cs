@@ -1,6 +1,4 @@
-using System;
-
-namespace DevFreela.API.Models
+namespace DevFreela.Application.Models
 {
     public record UserSkillsInputModel(int[] SkillIds, int Id);
 }

@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace DevFreela.API.Persistence.Migrations
+namespace DevFreela.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class FirstMigration : Migration
