@@ -1,5 +1,6 @@
 ﻿using DevFreela.Application.Commands.InsertSkill;
 using DevFreela.Application.Models;
+using DevFreela.Application.Queries.GetAllSkills;
 using DevFreela.Core.Entities;
 using DevFreela.Infrastructure.Persistence;
 using MediatR;
@@ -22,13 +23,13 @@ namespace DevFreela.API.Controllers
             _mediator = mediator;
         }
 
-        // TODO: Create Commands and Queries for Skills
         [HttpGet]
         public IActionResult GetAll()
         {
-            var skills = _context.Skills.ToList();
+            var query = new GetAllSkillsQuery();
+            var result = _mediator.Send(query);
 
-            return Ok(skills);
+            return Ok(result);
         }
 
         [HttpPost]
