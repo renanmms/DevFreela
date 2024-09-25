@@ -1,5 +1,6 @@
 ﻿using DevFreela.Application.Commands.InsertSkill;
 using DevFreela.Application.Commands.InsertUser;
+using DevFreela.Application.Queries.GetAllUsers;
 using DevFreela.Application.Queries.GetUserById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,15 @@ namespace DevFreela.API.Controllers
         public UsersController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var query = new GetAllUsersQuery();
+            var result = await _mediator.Send(query);
+
+            return Ok(result.Data);
         }
 
         [HttpGet("{id}")]
