@@ -16,12 +16,17 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             var query = new GetAllSkillsQuery();
-            var result = _mediator.Send(query);
+            var result = await _mediator.Send(query);
 
-            return Ok(result);
+            if(!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+            
+            return Ok(result.Data);
         }
 
         [HttpPost]
