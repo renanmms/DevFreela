@@ -37,7 +37,7 @@ namespace DevFreela.API.Controllers
                 return BadRequest(result.Message);
             }
 
-            return Ok(result);
+            return Ok(result.Data);
         }
 
         [HttpGet("{id}")]
@@ -51,7 +51,7 @@ namespace DevFreela.API.Controllers
                 return BadRequest(result.Message);
             }
             
-            return Ok(result);
+            return Ok(result.Data);
         }
 
 
