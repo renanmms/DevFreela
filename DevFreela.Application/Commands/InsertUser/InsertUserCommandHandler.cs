@@ -1,26 +1,25 @@
 using DevFreela.Application.Models;
 using DevFreela.Core.Entities;
-using DevFreela.Infrastructure.Persistence;
+using DevFreela.Core.Repositories;
 using MediatR;
 
 namespace DevFreela.Application.Commands.InsertUser
 {
     public class InsertUserCommandHandler : IRequestHandler<InsertUserCommand, ResultViewModel<int>>
     {
-        private readonly DevFreelaDbContext _context;
-        public InsertUserCommandHandler(DevFreelaDbContext context)
+        private readonly IUserRepository _repository;
+        public InsertUserCommandHandler(IUserRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<ResultViewModel<int>> Handle(InsertUserCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                 var user = new User(request.FullName, request.Email, request.Birthdate);
+                var user = new User(request.FullName, request.Email, request.Birthdate);
 
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync();
+                await _repository.AddAsync(user);
 
                 return ResultViewModel<int>.Success(user.Id);     
             }
