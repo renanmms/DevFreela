@@ -1,5 +1,6 @@
 using DevFreela.Application.Models;
 using DevFreela.Core.Entities;
+using DevFreela.Core.Repositories;
 using DevFreela.Infrastructure.Persistence;
 using MediatR;
 
@@ -7,10 +8,10 @@ namespace DevFreela.Application.Commands.InsertUserSkills
 {
     public class InsertUserSkillsCommandHandler : IRequestHandler<InsertUserSkillsCommand, ResultViewModel>
     {
-        private readonly DevFreelaDbContext _context;
-        public InsertUserSkillsCommandHandler(DevFreelaDbContext context)
+        private readonly ISkillRepository _repository;
+        public InsertUserSkillsCommandHandler(ISkillRepository repository)
         {
-            _context = context;    
+            _repository = repository;
         }
 
         public async Task<ResultViewModel> Handle(InsertUserSkillsCommand request, CancellationToken cancellationToken)
@@ -18,9 +19,7 @@ namespace DevFreela.Application.Commands.InsertUserSkills
             try
             {
                 var userSkills = request.SkillIds.Select(s => new UserSkill(request.Id, s)).ToList();
-
-                _context.UserSkills.AddRange(userSkills);
-                await _context.SaveChangesAsync();
+                await _repository.AddUserSkillAsync(userSkills);
 
                 return ResultViewModel.Success();
             }
