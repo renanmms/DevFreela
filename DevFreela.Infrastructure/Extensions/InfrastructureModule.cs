@@ -30,6 +30,7 @@ namespace DevFreela.Infrastructure.Extensions
         {
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ISkillRepository, SkillRepository>();
 
             return services;
         }
