@@ -10,7 +10,6 @@ using DevFreela.Application.Queries.GetProjectById;
 using DevFreela.Application.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DevFreela.API.Controllers
 {
@@ -56,16 +55,16 @@ namespace DevFreela.API.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Post(CreateProjectInputModel model)
+        public async Task<IActionResult> Post(InsertProjectCommand command)
         {
-            var result = await _mediator.Send(new InsertProjectCommand(model.Title, model.Description, model.IdClient, model.IdFreelancer, model.TotalCost));
+            var result = await _mediator.Send(command);
 
             if(!result.IsSuccess)
             {
                 return BadRequest(result.Message);
             }
 
-            return CreatedAtAction(nameof(GetById), new { id = result.Data}, model);
+            return CreatedAtAction(nameof(GetById), new { id = result.Data}, command);
         }
 
         [HttpPut("{id}")]
