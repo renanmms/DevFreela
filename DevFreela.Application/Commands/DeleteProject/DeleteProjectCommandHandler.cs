@@ -8,6 +8,7 @@ namespace DevFreela.Application.Commands.DeleteProject
 {
     public class DeleteProjectCommandHandler : IRequestHandler<DeleteProjectCommand, ResultViewModel>
     {
+        public const string PROJECT_NOT_FOUND_MESSAGE = "Projeto não encontrado";
         private readonly IProjectRepository _repository;
         public DeleteProjectCommandHandler(IProjectRepository repository)
         {
@@ -19,7 +20,7 @@ namespace DevFreela.Application.Commands.DeleteProject
             var project = await _repository.GetByIdAsync(request.Id);
             if(project is null)
             {
-                return ResultViewModel.Error("Projeto não encontrado");
+                return ResultViewModel.Error(PROJECT_NOT_FOUND_MESSAGE);
             }
 
             project.SetAsDeleted();
