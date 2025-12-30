@@ -25,12 +25,12 @@ namespace DevFreela.Application.Commands.InsertProject
                 request.IdFreelancer,
                 request.TotalCost);
 
-            await _repository.AddAsync(project);
+            var id = await _repository.AddAsync(project);
 
             var notification = new ProjectCreatedNotification(project.Id, project.Title, project.TotalCost);
             await _mediator.Publish(notification);
 
-            return ResultViewModel<int>.Success(project.Id);
+            return ResultViewModel<int>.Success(id);
         }
     }
 }
