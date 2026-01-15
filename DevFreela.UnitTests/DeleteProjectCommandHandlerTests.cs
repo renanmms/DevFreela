@@ -53,7 +53,7 @@ public class DeleteProjectCommandHandlerTests
     }
 
     [Fact]
-    public async Task ProjectDoesExists_Delete_Error_NSubstitute()
+    public async Task ProjectDoesNotExists_Delete_Error_NSubstitute()
     {
         // Arrange
         const int ID = 1;
