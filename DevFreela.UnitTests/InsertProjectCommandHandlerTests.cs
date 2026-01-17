@@ -2,6 +2,7 @@ using DevFreela.Application.Commands.InsertProject;
 using DevFreela.Application.Notifications.ProjectCreated;
 using DevFreela.Core.Entities;
 using DevFreela.Core.Repositories;
+using FluentAssertions;
 using MediatR;
 using Moq;
 using NSubstitute;
@@ -28,8 +29,9 @@ public class InsertProjectCommandHandlerTests
         var result = await handler.Handle(command, new CancellationToken());
         
         // Assert
-        Assert.True(result.IsSuccess);
-        Assert.Equal(ID, result.Data);
+        result.IsSuccess.Should().BeTrue();
+        result.Data.Should().Be(ID);
+
         await repository.Received(1).AddAsync(Arg.Any<Project>());
     }
     
@@ -48,8 +50,9 @@ public class InsertProjectCommandHandlerTests
         var result = await handler.Handle(command, new CancellationToken());
         
         // Assert
-        Assert.True(result.IsSuccess);
-        Assert.Equal(ID, result.Data);
+        result.IsSuccess.Should().BeTrue();
+        result.Data.Should().Be(ID);
+
         Mock.Get(repository).Verify(p => p.AddAsync(It.IsAny<Project>()), Times.Once);
     }
 }
