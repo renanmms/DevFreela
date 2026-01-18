@@ -2,6 +2,7 @@ using DevFreela.Application.Commands.InsertProject;
 using DevFreela.Application.Notifications.ProjectCreated;
 using DevFreela.Core.Entities;
 using DevFreela.Core.Repositories;
+using DevFreela.UnitTests.Fakes;
 using FluentAssertions;
 using MediatR;
 using Moq;
@@ -21,8 +22,8 @@ public class InsertProjectCommandHandlerTests
 
         repository.AddAsync(Arg.Any<Project>())
             .Returns(Task.FromResult(ID));
-
-        var command = new InsertProjectCommand("Project Title", "Project Description", 1, 2, 20000);
+        
+        var command = FakeDataHelper.CreateInsertProjectCommand();
         var handler = new InsertProjectCommandHandler(repository, mediator);
         
         // Act
@@ -42,8 +43,8 @@ public class InsertProjectCommandHandlerTests
         const int ID = 1;
         var repository = Mock.Of<IProjectRepository>(p => p.AddAsync(It.IsAny<Project>()) == Task.FromResult(ID));
         var mediator = Mock.Of<IMediator>(m => m.Publish(It.IsAny<ProjectCreatedNotification>(), CancellationToken.None) == Task.CompletedTask);
-
-        var command = new InsertProjectCommand("Project Title", "Project Description", 1, 2, 20000);
+        
+        var command = FakeDataHelper.CreateInsertProjectCommand();
         var handler = new InsertProjectCommandHandler(repository, mediator);
         
         // Act

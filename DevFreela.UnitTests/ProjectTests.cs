@@ -1,5 +1,6 @@
 using DevFreela.Core.Entities;
 using DevFreela.Core.Enums;
+using DevFreela.UnitTests.Fakes;
 using FluentAssertions;
 
 namespace DevFreela.UnitTests;
@@ -10,7 +11,7 @@ public class ProjectTests
     public void Project_Start_ProjectStarted()
     {
         // Arrange
-        var project = new Project("Project title", "Project description", 1, 1, 1000M);
+        var project = FakeDataHelper.CreateFakeProject();
         
         // Act
         project.Start();
@@ -24,7 +25,7 @@ public class ProjectTests
     public void ProjectStarted_Complete_ProjectCompleted()
     {
         // Arrange
-        var project = new Project("Project Started", "Project description", 1, 1, 1000M);
+        var project = FakeDataHelper.CreateFakeProject();
         project.Start();
         
         // Act
@@ -39,7 +40,7 @@ public class ProjectTests
     public void ProjectWithPaymentPending_Complete_ProjectCompleted()
     {
         // Arrange
-        var project = new Project("Project Started", "Project description", 1, 1, 1000M);
+        var project = FakeDataHelper.CreateFakeProject();
         project.SetPaymentPending();
         
         // Act
