@@ -68,5 +68,18 @@ namespace DevFreela.API.Controllers
             var description = $"File: {file.FileName}, Size: {file.Length}";
             return Ok(description);
         }
+
+        [HttpPut("login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginUserCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result.Data);
+        }
     }
 }
