@@ -6,6 +6,8 @@ namespace DevFreela.Application.Commands.InsertUser
     public record InsertUserCommand(
         string FullName,
         string Email, 
-        DateTime Birthdate
+        DateTime Birthdate,
+        string Password,
+        string Role
     ) : IRequest<ResultViewModel<int>>;
 }
