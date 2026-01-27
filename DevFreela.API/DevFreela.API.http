@@ -9,14 +9,37 @@ Accept: application/json
 ###
 
 POST {{HostAddress}}/api/Projects
+Authorization: Bearer {{JwtToken}}
+Content-Type: application/json
 Accept: application/json
 
 {
-    "title": "My 2nd project",
-    "description": "this is the description of my second project",
-    "idClient": 2,
-    "idFreelancer": 3,
+    "title": "My third project",
+    "description": "this is the description of my third project",
+    "idClient": 1,
+    "idFreelancer": 2,
     "totalCost": 10000
 }
 
 ### 
+
+PUT {{HostAddress}}/api/Users/login
+Content-Type: application/json
+
+{
+    "email": "renanmartins1999@hotmail.com",
+    "password": "Teste@123"
+}
+
+###
+
+POST {{HostAddress}}/api/Users
+Content-Type: application/json
+
+{
+  "fullname": "Fulano da Silva",
+  "email": "fulano@tuamaeaquelaursa.com",
+  "birthdate": "2001-01-01",
+  "password": "Teste@456",
+  "role": "Client"
+}
