@@ -28,6 +28,7 @@ namespace DevFreela.API.Controllers
 
         // GET api/projects?search=crm
         [HttpGet]
+        [Authorize(Roles = "freelancer, client")]
         public async Task<IActionResult> Get(string searchs = "", int page = 0, int size = 3)
         {
             var query = new GetAllProjectsQuery();
@@ -41,6 +42,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "freelancer, client")]
         public async Task<IActionResult> GetById(int id) 
         {
             var query = new GetProjectByIdQuery(id);
@@ -53,10 +55,9 @@ namespace DevFreela.API.Controllers
             
             return Ok(result.Data);
         }
-
-
+        
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "client")]
         public async Task<IActionResult> Post(InsertProjectCommand command)
         {
             var result = await _mediator.Send(command);
@@ -70,6 +71,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "client")]
         public async Task<IActionResult> Put(int id, UpdateProjectInputModel model)
         {
             var command = new UpdateProjectCommand(model.IdProject, model.Title, model.Description, model.TotalCost);
@@ -84,6 +86,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "client")]
         public async Task<IActionResult> Delete(int id)
         {
             var command = new DeleteProjectCommand(id);
@@ -98,6 +101,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPut("{id}/start")]
+        [Authorize(Roles = "freelancer")]
         public async Task<IActionResult> Start(int id)
         {
             var command = new StartProjectCommand(id);
@@ -126,6 +130,7 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPost("{id}/comments")]
+        [Authorize(Roles = "freelancer, client")]
         public async Task<IActionResult> PostComment(CreateProjectCommentInputModel model)
         {
             var command = new InsertCommentCommand(model.Content, model.IdProject, model.IdUser);
