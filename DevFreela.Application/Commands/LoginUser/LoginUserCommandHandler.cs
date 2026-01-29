@@ -24,7 +24,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, ResultV
         var user = await _repository.GetByEmailAndPasswordAsync(request.Email, hash);
 
         if (user is null)
-            return ResultViewModel<LoginViewModel>.Error("User not found!");
+            return ResultViewModel<LoginViewModel>.Error("Login failed!");
 
         var token = _authService.GenerateToken(user.Email, user.Role);
         
