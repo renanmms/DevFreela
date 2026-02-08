@@ -65,26 +65,3 @@ Content-Type: application/json
   "idUser": 1002,
   "idProject": 2002
 }
-
-###
-
-PUT {{HostAddress}}/api/Users/login
-Content-Type: application/json
-
-{
-    "email": "renanmartins1999@hotmail.com",
-    "password": "Teste@123"
-}
-
-###
-
-POST {{HostAddress}}/api/Users
-Content-Type: application/json
-
-{
-  "fullname": "Beltrano de Souza",
-  "email": "beltrano@hotmail.com",
-  "birthdate": "1999-10-10",
-  "password": "Teste@123",
-  "role": "client"
-}
