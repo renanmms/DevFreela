@@ -44,5 +44,12 @@ namespace DevFreela.Infrastructure.Repositories
 
             return user;
         }
+
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+
+            return user;
+        }
     }
 }
