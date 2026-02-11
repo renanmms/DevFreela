@@ -68,6 +68,7 @@ namespace DevFreela.Infrastructure.Extensions
         private static IServiceCollection AddEmailService(this IServiceCollection services,
             IConfiguration configuration)
         {
+            services.Configure<SendGridConfig>(configuration.GetSection(nameof(SendGridConfig)));
             services.AddSendGrid(o =>
             {
                 o.ApiKey = configuration["SendGridConfig:ApiKey"] ?? string.Empty;
