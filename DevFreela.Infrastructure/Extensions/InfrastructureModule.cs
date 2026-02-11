@@ -1,6 +1,7 @@
 using System.Text;
 using DevFreela.Core.Repositories;
 using DevFreela.Infrastructure.Auth;
+using DevFreela.Infrastructure.Notifications;
 using DevFreela.Infrastructure.Persistence;
 using DevFreela.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using SendGrid.Extensions.DependencyInjection;
 
 namespace DevFreela.Infrastructure.Extensions
 {
@@ -18,6 +20,7 @@ namespace DevFreela.Infrastructure.Extensions
             services
                 .AddData(configuration)
                 .AddAuth(configuration)
+                .AddEmailService(configuration)
                 .AddRepositories();
 
             return services;
@@ -59,6 +62,19 @@ namespace DevFreela.Infrastructure.Extensions
                     };
                 });
             
+            return services;
+        }
+
+        private static IServiceCollection AddEmailService(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddSendGrid(o =>
+            {
+                o.ApiKey = configuration["SendGridConfig:ApiKey"] ?? string.Empty;
+            });
+            
+            services.AddScoped<IEmailService, EmailService>();
+
             return services;
         }
     }
