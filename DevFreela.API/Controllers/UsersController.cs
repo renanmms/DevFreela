@@ -2,6 +2,7 @@
 using DevFreela.Application.Commands.InsertUser;
 using DevFreela.Application.Commands.LoginUser;
 using DevFreela.Application.Commands.RecoverPassword;
+using DevFreela.Application.Commands.ValidateRecoveryCode;
 using DevFreela.Application.Queries.GetAllUsers;
 using DevFreela.Application.Queries.GetUserById;
 using MediatR;
@@ -102,12 +103,20 @@ namespace DevFreela.API.Controllers
         }
 
         [HttpPost("password-recovery/validate")]
-        public IActionResult ValidateRecoveryCode()
+        [AllowAnonymous]
+        public async Task<IActionResult> ValidateRecoveryCode(ValidateRecoveryCodeCommand command)
         {
-            return Ok();
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return NoContent();
         }
 
         [HttpPost("password-recovery/change")]
+        [AllowAnonymous]
         public IActionResult ChangePassword()
         {
             return Ok();
