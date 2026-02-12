@@ -37,7 +37,6 @@ public class DeleteProjectCommandHandlerTests
     {
         // Arrange
         const int ID = 1;
-        // TODO: Use _projectFaker
         var project = FakeDataHelper.CreateFakeProject();
         var repository = Mock.Of<IProjectRepository>(p => 
             p.GetByIdAsync(It.IsAny<int>()) == Task.FromResult(project) &&

@@ -6,7 +6,6 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace DevFreela.Application.Commands.RecoverPassword;
 
-// TODO: Verify that it is correct to use a command in the request scenario
 public class RecoverPasswordCommandHandler : IRequestHandler<RecoverPasswordCommand, ResultViewModel>
 {
     private readonly IEmailService _emailService;
