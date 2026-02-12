@@ -6,13 +6,13 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace DevFreela.Application.Commands.RecoverPassword;
 
-public class RecoverPasswordCommandHandler : IRequestHandler<RecoverPasswordCommand, ResultViewModel>
+public class RequestPasswordRecoveryCommandHandler : IRequestHandler<RequestPasswordRecoveryCommand, ResultViewModel>
 {
     private readonly IEmailService _emailService;
     private readonly IUserRepository _userRepository;
     private readonly IMemoryCache _cache;
     
-    public RecoverPasswordCommandHandler(
+    public RequestPasswordRecoveryCommandHandler(
         IEmailService emailService,
         IUserRepository userRepository,
         IMemoryCache cache)
@@ -22,7 +22,7 @@ public class RecoverPasswordCommandHandler : IRequestHandler<RecoverPasswordComm
         _cache = cache;
     }
     
-    public async Task<ResultViewModel> Handle(RecoverPasswordCommand request, CancellationToken cancellationToken)
+    public async Task<ResultViewModel> Handle(RequestPasswordRecoveryCommand request, CancellationToken cancellationToken)
     {
         var user = await  _userRepository.GetByEmailAsync(request.Email);
         if (user is null) {

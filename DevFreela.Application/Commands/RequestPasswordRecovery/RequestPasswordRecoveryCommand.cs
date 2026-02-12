@@ -3,4 +3,4 @@ using MediatR;
 
 namespace DevFreela.Application.Commands.RecoverPassword;
 
-public record RecoverPasswordCommand(string Email) : IRequest<ResultViewModel>;
+public record RequestPasswordRecoveryCommand(string Email) : IRequest<ResultViewModel>;

@@ -92,7 +92,7 @@ namespace DevFreela.API.Controllers
 
         [HttpPost("password-recovery/request")]
         [AllowAnonymous]
-        public async Task <IActionResult> RecoverPassword(RecoverPasswordCommand command)
+        public async Task <IActionResult> RecoverPassword(RequestPasswordRecoveryCommand command)
         {
             var result = await _mediator.Send(command);
             if (!result.IsSuccess)
