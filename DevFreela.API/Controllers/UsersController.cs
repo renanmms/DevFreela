@@ -1,4 +1,5 @@
-﻿using DevFreela.Application.Commands.InsertSkill;
+﻿using DevFreela.Application.Commands.ChangeUserPassword;
+using DevFreela.Application.Commands.InsertSkill;
 using DevFreela.Application.Commands.InsertUser;
 using DevFreela.Application.Commands.LoginUser;
 using DevFreela.Application.Commands.RecoverPassword;
@@ -117,9 +118,15 @@ namespace DevFreela.API.Controllers
 
         [HttpPost("password-recovery/change")]
         [AllowAnonymous]
-        public IActionResult ChangePassword()
+        public async Task<IActionResult> ChangePassword(ChangeUserPasswordCommand command)
         {
-            return Ok();
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+            
+            return NoContent();
         }
     }
 }
