@@ -14,6 +14,7 @@ namespace DevFreela.Application.Extensions
         {
             services
                 .AddScoped<IProjectService, ProjectService>()
+                .AddMemoryCache()
                 .AddHandlers()
                 .AddValidation();
 

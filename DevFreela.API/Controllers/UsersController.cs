@@ -1,6 +1,9 @@
-﻿using DevFreela.Application.Commands.InsertSkill;
+﻿using DevFreela.Application.Commands.ChangeUserPassword;
+using DevFreela.Application.Commands.InsertSkill;
 using DevFreela.Application.Commands.InsertUser;
 using DevFreela.Application.Commands.LoginUser;
+using DevFreela.Application.Commands.RecoverPassword;
+using DevFreela.Application.Commands.ValidateRecoveryCode;
 using DevFreela.Application.Queries.GetAllUsers;
 using DevFreela.Application.Queries.GetUserById;
 using MediatR;
@@ -15,7 +18,8 @@ namespace DevFreela.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public UsersController(IMediator mediator)
+        public UsersController(
+            IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -84,6 +88,45 @@ namespace DevFreela.API.Controllers
             }
 
             return Ok(result.Data);
+        }
+
+        [HttpPost("password-recovery/request")]
+        [AllowAnonymous]
+        public async Task <IActionResult> RecoverPassword(RecoverPasswordCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+            
+            return NoContent();
+        }
+
+        [HttpPost("password-recovery/validate")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ValidateRecoveryCode(ValidateRecoveryCodeCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return NoContent();
+        }
+
+        [HttpPost("password-recovery/change")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ChangePassword(ChangeUserPasswordCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+            
+            return NoContent();
         }
     }
 }
