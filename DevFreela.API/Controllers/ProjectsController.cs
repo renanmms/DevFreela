@@ -1,110 +1,147 @@
-﻿using DevFreela.Application.Commands.CreateComment;
-using DevFreela.Application.Commands.CreateProject;
+﻿using DevFreela.Application.Commands.CompleteProject;
 using DevFreela.Application.Commands.DeleteProject;
-using DevFreela.Application.Commands.FinishProject;
+using DevFreela.Application.Commands.InsertComment;
+using DevFreela.Application.Commands.InsertProject;
 using DevFreela.Application.Commands.StartProject;
 using DevFreela.Application.Commands.UpdateProject;
+using DevFreela.Application.Models;
 using DevFreela.Application.Queries.GetAllProjects;
-using DevFreela.Application.Queries.GetProject;
+using DevFreela.Application.Queries.GetProjectById;
+using DevFreela.Application.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevFreela.API.Controllers
 {
-    [Route("api/[controller]")]
-    [Authorize]
     [ApiController]
-
+    [Route("api/[controller]")]
     public class ProjectsController : ControllerBase
     {
+        private readonly IProjectService _service;
         private readonly IMediator _mediator;
-
-        public ProjectsController(IMediator mediator)
+        public ProjectsController(IProjectService service, IMediator mediator)
         {
+            _service = service;
             _mediator = mediator;
         }
 
-        //api/Projects/query
+        // GET api/projects?search=crm
         [HttpGet]
-        [Authorize(Roles = "client,freelancer")]
-        public async Task<IActionResult> Get(string query)
+        [Authorize(Roles = "freelancer, client")]
+        public async Task<IActionResult> Get(string searchs = "", int page = 0, int size = 3)
         {
-            var getAllProjectsQuery = new GetAllProjectsQuery(query);
-            var projects = await _mediator.Send(getAllProjectsQuery);
+            var query = new GetAllProjectsQuery();
+            var result = await _mediator.Send(query);
+            if(!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
 
-            return Ok(projects);
+            return Ok(result.Data);
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "client,freelancer")]
-        public async Task<IActionResult> GetById(int id)
+        [Authorize(Roles = "freelancer, client")]
+        public async Task<IActionResult> GetById(int id) 
         {
-            var query = new GetProjectQuery(id);
-            var project = await _mediator.Send(query);
+            var query = new GetProjectByIdQuery(id);
+            var result = await _mediator.Send(query);
 
-            if(project == null)
-                return NotFound();
+            if(!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
             
-            return Ok(project);
+            return Ok(result.Data);
         }
-
+        
         [HttpPost]
         [Authorize(Roles = "client")]
-        public async Task<IActionResult> Post([FromBody] CreateProjectCommand command)
-        {
-            var id = await _mediator.Send(command);
-
-            return CreatedAtAction(nameof(GetById), new { id = id }, command); 
-        }
-
-        [HttpPut]
-        [Authorize(Roles = "client")]
-        public async Task<IActionResult> Put(int id, [FromBody] UpdateProjectCommand command)
-        {
-            await _mediator.Send(command);
-            
-            return NoContent();
-        }
-
-        // api/projects/3
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "client")]
-        public async Task<IActionResult> Delete([FromBody] DeleteProjectCommand command)
-        {
-            await _mediator.Send(command);
-            return NoContent();
-        }
-
-        // api/Projects/2/comments
-        [HttpPost("{id}/comments")]
-        [Authorize(Roles = "client,freelancer")]
-        public async Task<IActionResult> PostComment(int id, [FromBody] CreateCommentCommand command)
-        {
-            var mediator = await _mediator.Send(command);
-
-            return NoContent();
-        }
-
-        // api/Projects/2/start
-        [HttpPut("{id}/start")]
-        [Authorize(Roles = "freelancer")]
-        public async Task<IActionResult> Start([FromBody] StartProjectCommand command)
-        {
-            await _mediator.Send(command);
-            return NoContent();
-        }
-
-        [HttpPut("{id}/finish")]
-        [Authorize(Roles = "freelancer")]
-        public async Task<IActionResult> Finish([FromBody] FinishProjectCommand command)
+        public async Task<IActionResult> Post(InsertProjectCommand command)
         {
             var result = await _mediator.Send(command);
 
-            if(!result)
-                return BadRequest("O pagamento não pôde ser processado.");
-                
-            return Accepted();
+            if(!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return CreatedAtAction(nameof(GetById), new { id = result.Data}, command);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "client")]
+        public async Task<IActionResult> Put(int id, UpdateProjectInputModel model)
+        {
+            var command = new UpdateProjectCommand(model.IdProject, model.Title, model.Description, model.TotalCost);
+            var result = await _mediator.Send(command);
+
+            if(!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "client")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var command = new DeleteProjectCommand(id);
+            var result = await _mediator.Send(command);
+
+            if(!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("{id}/start")]
+        [Authorize(Roles = "freelancer")]
+        public async Task<IActionResult> Start(int id)
+        {
+            var command = new StartProjectCommand(id);
+            var result = await _mediator.Send(command);
+
+           if(!result.IsSuccess)
+           {
+                return BadRequest(result.Message);
+           }
+
+            return NoContent();
+        }
+
+        [HttpPut("{id}/complete")]
+        public async Task<IActionResult> Complete(int id)
+        {
+            var command = new CompleteProjectCommand(id);
+            var result = await _mediator.Send(command);
+
+            if(!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return NoContent();
+        }
+
+        [HttpPost("{id}/comments")]
+        [Authorize(Roles = "freelancer, client")]
+        public async Task<IActionResult> PostComment(CreateProjectCommentInputModel model)
+        {
+            var command = new InsertCommentCommand(model.Content, model.IdProject, model.IdUser);
+            var result = await _mediator.Send(command);
+
+            if(!result.IsSuccess)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return NoContent();
         }
 
     }

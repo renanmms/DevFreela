@@ -1,31 +1,33 @@
-using DevFreela.Application.ViewModels;
+using DevFreela.Application.Models;
 using DevFreela.Core.Repositories;
-using DevFreela.Core.Services;
+using DevFreela.Infrastructure.Auth;
 using MediatR;
 
-namespace DevFreela.Application.Commands.LoginUser
+namespace DevFreela.Application.Commands.LoginUser;
+
+public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, ResultViewModel<LoginViewModel>>
 {
-    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUserViewModel>
+    private readonly IUserRepository _repository;
+    private readonly IAuthService _authService;
+
+    public LoginUserCommandHandler(
+        IUserRepository repository,
+        IAuthService authService)
     {
-        private readonly IAuthService _authService;
-        private readonly IUserRepository _userRepository;
+        _repository = repository;
+        _authService = authService;
+    }
+    
+    public async Task<ResultViewModel<LoginViewModel>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    {
+        var hash = _authService.ComputeHash(request.Password);
+        var user = await _repository.GetByEmailAndPasswordAsync(request.Email, hash);
 
-        public LoginUserCommandHandler(IAuthService authService, IUserRepository userRepository)
-        {
-            _userRepository = userRepository;
-            _authService = authService;
-        }
+        if (user is null)
+            return ResultViewModel<LoginViewModel>.Error("Login failed!");
 
-        public async Task<LoginUserViewModel> Handle(LoginUserCommand request, CancellationToken cancellationToken)
-        {
-            var passwordHash = _authService.ComputeSha256Hash(request.Password);
-
-            var user = await _userRepository.GetUserByEmailAndPasswordAsync(request.Email, passwordHash);
-            if(user == null){
-                return null;
-            }
-
-            return new LoginUserViewModel(user.Email, _authService.GenerateJwtToken(user.Email, user.Role));
-        }
+        var token = _authService.GenerateToken(user.Email, user.Role);
+        
+        return ResultViewModel<LoginViewModel>.Success(new LoginViewModel(token));
     }
 }

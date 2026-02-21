@@ -1,31 +1,31 @@
-﻿using DevFreela.Application.InputModels;
-using DevFreela.Core.DTOs;
+using System;
+using DevFreela.Application.Models;
 using DevFreela.Core.Repositories;
 using DevFreela.Infrastructure.Persistence;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DevFreela.Application.Commands.UpdateProject
 {
-    public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand, int>
+    public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand, ResultViewModel>
     {
-        private readonly IProjectRepository _projectRepository;
-
-        public UpdateProjectCommandHandler(IProjectRepository projectRepository)
+        private readonly IProjectRepository _repository;
+        public UpdateProjectCommandHandler(IProjectRepository repository)
         {
-            _projectRepository = projectRepository;
+            _repository = repository;
         }
 
-        public async Task<int> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
         {
-            var model = new UpdateProjectDTO(request.Id, request.Title, request.Description, request.TotalCost);
-            var id = await _projectRepository.UpdateProjectAsync(model);
-            return id;
+            var project = await _repository.GetByIdAsync(request.IdProject);
+            if(project is null)
+            {
+                return ResultViewModel.Error("Projeto não encontrado");
+            }
+            
+            project.Update(request.Title, request.Description, request.TotalCost);
+            await _repository.UpdateAsync(project);
+
+            return ResultViewModel.Success();
         }
     }
 }

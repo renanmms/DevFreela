@@ -1,22 +1,32 @@
-﻿using DevFreela.Core.Enums;
+using DevFreela.Application.Models;
 using DevFreela.Core.Repositories;
+using DevFreela.Infrastructure.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevFreela.Application.Commands.DeleteProject
 {
-    public class DeleteProjectCommandHandler : IRequestHandler<DeleteProjectCommand, ProjectStatusEnum>
+    public class DeleteProjectCommandHandler : IRequestHandler<DeleteProjectCommand, ResultViewModel>
     {
-        private readonly IProjectRepository _projectRepository;
-
-        public DeleteProjectCommandHandler(IProjectRepository projectRepository)
+        public const string PROJECT_NOT_FOUND_MESSAGE = "Projeto não encontrado";
+        private readonly IProjectRepository _repository;
+        public DeleteProjectCommandHandler(IProjectRepository repository)
         {
-            _projectRepository = projectRepository;
+            _repository = repository;
         }
-
-        public async Task<ProjectStatusEnum> Handle(DeleteProjectCommand request, CancellationToken cancellationToken)
+    
+        public async Task<ResultViewModel> Handle(DeleteProjectCommand request, CancellationToken cancellationToken)
         {
-            var status = await _projectRepository.DeleteProjectAsync(request.Id);
-            return status;
+            var project = await _repository.GetByIdAsync(request.Id);
+            if(project is null)
+            {
+                return ResultViewModel.Error(PROJECT_NOT_FOUND_MESSAGE);
+            }
+
+            project.SetAsDeleted();
+            await _repository.UpdateAsync(project);
+
+            return ResultViewModel.Success();
         }
     }
 }

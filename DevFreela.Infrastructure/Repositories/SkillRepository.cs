@@ -1,31 +1,30 @@
-﻿using Dapper;
-using DevFreela.Core.DTOs;
+using DevFreela.Core.Entities;
 using DevFreela.Core.Repositories;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
+using DevFreela.Infrastructure.Persistence;
 
 namespace DevFreela.Infrastructure.Repositories
 {
     public class SkillRepository : ISkillRepository
     {
-        private readonly string _connectionString;
+        private readonly DevFreelaDbContext _context;
 
-        public SkillRepository(IConfiguration configuration)
+        public SkillRepository(DevFreelaDbContext context)
         {
-            _connectionString = configuration.GetConnectionString("DevFreelaCs");
+            _context = context;    
         }
 
-        public async Task<List<SkillDTO>> GetAllAsync()
+        public async Task<int> AddSkillAsync(Skill skill)
         {
-            using (var dbConnection = new SqlConnection(_connectionString))
-            {
-                dbConnection.Open();
+            await _context.Skills.AddAsync(skill);
+            await _context.SaveChangesAsync();
+            
+            return skill.Id;
+        }
 
-                var script = @"SELECT Id, Description FROM Skills";
-                var query = await dbConnection.QueryAsync<SkillDTO>(script);
-
-                return query.ToList();
-            }
+        public async Task AddUserSkillAsync(List<UserSkill> userSkills)
+        {
+            await _context.UserSkills.AddRangeAsync(userSkills);
+            await _context.SaveChangesAsync();
         }
     }
 }

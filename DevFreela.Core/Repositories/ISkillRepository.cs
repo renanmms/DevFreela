@@ -1,10 +1,10 @@
-﻿using DevFreela.Core.DTOs;
 using DevFreela.Core.Entities;
 
 namespace DevFreela.Core.Repositories
 {
     public interface ISkillRepository
     {
-        Task<List<SkillDTO>> GetAllAsync();
+        Task<int> AddSkillAsync(Skill skill);
+        Task AddUserSkillAsync(List<UserSkill> userSkills);
     }
 }

@@ -1,27 +1,25 @@
-using FluentValidation.AspNetCore;
-using Microsoft.EntityFrameworkCore;
-using DevFreela.API.Filters;
-using DevFreela.API.Extensions;
-using DevFreela.Application.Validators;
-using DevFreela.Infrastructure.Persistence;
+using DevFreela.API.ExceptionHandlers;
+using DevFreela.Application.Models;
+using DevFreela.Application.Extensions;
+using DevFreela.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DevFreelaCs");
-builder.Services.AddDbContext<DevFreelaDbContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddControllers(options => options.Filters.Add(typeof(ValidationFilter)))
-    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
-
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.Configure<FreelanceTotalCostConfig>(builder.Configuration.GetSection(nameof(FreelanceTotalCostConfig)));
 
+builder.Services
+    .AddApplication()
+    .AddInfrastructure(builder.Configuration);
 
-// Configure repositories
-builder.AddRepositories();
-builder.AddBaseServices();
+builder.Services.AddExceptionHandler<ApiExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 
 var app = builder.Build();
 
@@ -32,9 +30,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseExceptionHandler();
+
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

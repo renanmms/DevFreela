@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace DevFreela.Core.Entities
 {
-    public abstract class BaseEntity
+    public class BaseEntity
     {
-        protected BaseEntity()
+        public BaseEntity()
         {
-
+            CreatedAt = DateTime.Now;
+            IsDeleted = false;
         }
 
-        protected BaseEntity(int id)
-        {
-            Id = id;
-        }
         public int Id { get; private set; }
+        public DateTime CreatedAt { get; private set; }
+        public bool IsDeleted { get; private set; }
+        public void SetAsDeleted()
+        {
+            IsDeleted = true;
+        }
     }
 }

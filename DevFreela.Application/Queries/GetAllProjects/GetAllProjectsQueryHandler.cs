@@ -1,25 +1,24 @@
-﻿using DevFreela.Application.ViewModels;
-using DevFreela.Core.DTOs;
-using DevFreela.Core.Entities;
+using DevFreela.Application.Models;
 using DevFreela.Core.Repositories;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 
 namespace DevFreela.Application.Queries.GetAllProjects
 {
-    public class GetAllProjectsQueryHandler : IRequestHandler<GetAllProjectsQuery, List<Project>>
+    public class GetAllProjectsQueryHandler : IRequestHandler<GetAllProjectsQuery, ResultViewModel<List<ProjectItemViewModel>>>
     {
-        private readonly IProjectRepository _projectRepository;
-
-        public GetAllProjectsQueryHandler(IProjectRepository projectRepository)
+        private readonly IProjectRepository _repository;
+        public GetAllProjectsQueryHandler(IProjectRepository repository)
         {
-            _projectRepository = projectRepository;
+            _repository = repository;
         }
 
-        public async Task<List<Project>> Handle(GetAllProjectsQuery request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel<List<ProjectItemViewModel>>> Handle(GetAllProjectsQuery request, CancellationToken cancellationToken)
         {
-            var projects = await _projectRepository.GetAllAsync();
-            return projects;
+            var projects = await _repository.GetAllAsync();
+
+            var model = projects.Select(ProjectItemViewModel.FromEntity).ToList();
+
+            return ResultViewModel<List<ProjectItemViewModel>>.Success(model);
         }
     }
 }
