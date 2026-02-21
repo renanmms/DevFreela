@@ -1,9 +1,18 @@
 # DevFreela
 
-Projeto DevFreela feito na Nova Formação ASP.NET Core, atualmente está em andamento
+Projeto Web API com ASP.NET Core com o padrão REST, consiste em uma plataforma entre clientes e freelancers. O cliente realiza a criação de projetos e os freelancers participam de projetos e conseguem iniciar ou finalizar os projetos.
 
 ## Tecnologias utilizadas
 
 - C#
 - .NET 8
+- Entity Framework Core
+- SQL Server
+
+## Padrões utilizados
+
+- Arquitetura Limpa
+- Repository Pattern
+- Result Pattern
+- CQRS
 
