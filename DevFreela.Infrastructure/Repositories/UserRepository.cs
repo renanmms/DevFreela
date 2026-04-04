@@ -51,5 +51,14 @@ namespace DevFreela.Infrastructure.Repositories
 
             return user;
         }
+
+        public async Task<List<User>> GetFreelancersAsync()
+        {
+            var freelancers = await _context.Users
+                .Where(u => u.Role.Equals("freelancer"))
+                .ToListAsync();
+
+            return freelancers;
+        }
     }
 }
