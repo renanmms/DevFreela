@@ -54,7 +54,7 @@ namespace DevFreela.API.Controllers
                 return BadRequest(result.Message);
             }
 
-            return NoContent();
+            return CreatedAtAction(nameof(GetById), new { id = result.Data }, command);
         }
 
         [HttpPost("{id}/skills")]
