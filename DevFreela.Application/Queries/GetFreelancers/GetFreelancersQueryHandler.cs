@@ -5,7 +5,7 @@ using MediatR;
 
 namespace DevFreela.Application.Queries.GetFreelancers
 {
-    public class GetFreelancersQueryHandler : IRequestHandler<GetFreelancersQuery, ResultViewModel<List<User>>>
+    public class GetFreelancersQueryHandler : IRequestHandler<GetFreelancersQuery, ResultViewModel<List<FreelancerViewModel>>>
     {
         private readonly IUserRepository _repository;
 
@@ -14,11 +14,12 @@ namespace DevFreela.Application.Queries.GetFreelancers
             _repository = repository;
         }
 
-        public async Task<ResultViewModel<List<User>>> Handle(GetFreelancersQuery request, CancellationToken cancellationToken)
+        public async Task<ResultViewModel<List<FreelancerViewModel>>> Handle(GetFreelancersQuery request, CancellationToken cancellationToken)
         {
             var freelancers = await _repository.GetFreelancersAsync();
+            var models = freelancers.Select(FreelancerViewModel.FromEntity).ToList();
 
-            return ResultViewModel<List<User>>.Success(freelancers);
+            return ResultViewModel<List<FreelancerViewModel>>.Success(models);
         }
     }
 }

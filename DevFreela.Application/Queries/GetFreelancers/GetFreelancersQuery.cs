@@ -4,6 +4,6 @@ using MediatR;
 
 namespace DevFreela.Application.Queries.GetFreelancers
 {
-    public record GetFreelancersQuery() : IRequest<ResultViewModel<List<User>>>;
+    public record GetFreelancersQuery() : IRequest<ResultViewModel<List<FreelancerViewModel>>>;
 }
 
