@@ -74,7 +74,7 @@ namespace DevFreela.API.Controllers
         [Authorize(Roles = "client")]
         public async Task<IActionResult> Put(int id, UpdateProjectInputModel model)
         {
-            var command = new UpdateProjectCommand(model.IdProject, model.Title, model.Description, model.TotalCost);
+            var command = new UpdateProjectCommand(id, model.Title, model.Description, model.TotalCost);
             var result = await _mediator.Send(command);
 
             if(!result.IsSuccess)

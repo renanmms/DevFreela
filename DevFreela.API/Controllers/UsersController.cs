@@ -5,6 +5,7 @@ using DevFreela.Application.Commands.LoginUser;
 using DevFreela.Application.Commands.RecoverPassword;
 using DevFreela.Application.Commands.ValidateRecoveryCode;
 using DevFreela.Application.Queries.GetAllUsers;
+using DevFreela.Application.Queries.GetFreelancers;
 using DevFreela.Application.Queries.GetUserById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -54,7 +55,7 @@ namespace DevFreela.API.Controllers
                 return BadRequest(result.Message);
             }
 
-            return NoContent();
+            return CreatedAtAction(nameof(GetById), new { id = result.Data }, command);
         }
 
         [HttpPost("{id}/skills")]
@@ -127,6 +128,16 @@ namespace DevFreela.API.Controllers
             }
             
             return NoContent();
+        }
+
+        [HttpGet("freelancers")]
+        [Authorize(Roles = "client")]
+        public async Task<IActionResult> GetFreelancers()
+        {
+            var query = new GetFreelancersQuery();
+            var result = await _mediator.Send(query);
+
+            return Ok(result.Data);
         }
     }
 }

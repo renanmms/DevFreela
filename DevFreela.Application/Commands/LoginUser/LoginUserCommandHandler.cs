@@ -28,6 +28,6 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, ResultV
 
         var token = _authService.GenerateToken(user.Email, user.Role);
         
-        return ResultViewModel<LoginViewModel>.Success(new LoginViewModel(token));
+        return ResultViewModel<LoginViewModel>.Success(new LoginViewModel(user.Id, user.FullName, user.Role, token));
     }
 }
